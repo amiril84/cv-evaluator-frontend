@@ -1,19 +1,32 @@
-import React, { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { Upload, Download, FileText, CheckCircle, Clock, AlertCircle, Loader2 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 
+interface Section {
+  name: string;
+  score: number;
+  keywords: string[];
+}
+
+interface EvaluationResult {
+  name: string;
+  matchScore: number;
+  sections: Section[];
+}
+
 const CVEvaluator = () => {
   const [cvFile, setCvFile] = useState(null);
   const [jobFile, setJobFile] = useState(null);
   const [evaluationReport, setEvaluationReport] = useState(null);
   const [isEvaluating, setIsEvaluating] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
+  const [result, setResult] = useState<EvaluationResult | null>(null);
 
-  const handleFileUpload = (event, type) => {
-    const file = event.target.files[0];
+  const handleFileUpload = (event: ChangeEvent<HTMLInputElement>, type: 'cv' | 'jd') => {
+    const file = event.target.files?.[0];
     if (file && file.type === 'application/pdf' && file.size <= 5 * 1024 * 1024) {
       if (type === 'cv') {
         setCvFile(file);
@@ -26,17 +39,17 @@ const CVEvaluator = () => {
     }
   };
 
-  const handleDragOver = (event) => {
+  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     event.currentTarget.classList.add('border-blue-500');
   };
 
-  const handleDragLeave = (event) => {
+  const handleDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     event.currentTarget.classList.remove('border-blue-500');
   };
 
-  const handleDrop = (event, type) => {
+  const handleDrop = (event: React.DragEvent<HTMLDivElement>, type: 'cv' | 'jd') => {
     event.preventDefault();
     event.currentTarget.classList.remove('border-blue-500');
     const file = event.dataTransfer.files[0];
@@ -175,14 +188,14 @@ const CVEvaluator = () => {
             }`}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
-            onDrop={(e) => handleDrop(e, 'job')}
+            onDrop={(e) => handleDrop(e, 'jd')}
           >
             <input
               type="file"
               id="job-upload"
               className="hidden"
               accept=".pdf"
-              onChange={(e) => handleFileUpload(e, 'job')}
+              onChange={(e) => handleFileUpload(e, 'jd')}
               disabled={isEvaluating}
             />
             <label 

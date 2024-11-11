@@ -5,10 +5,10 @@
     "lib": ["ES2023"],
     "composite": true,
     "module": "ESNext",
-    "moduleResolution": "Node",
+    "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
-    "noEmit": false,
+    "noEmit": true,
 
     /* Bundler mode */
     "allowImportingTsExtensions": true,
