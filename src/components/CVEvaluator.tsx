@@ -5,18 +5,6 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 
-interface Section {
-  name: string;
-  score: number;
-  keywords: string[];
-}
-
-interface EvaluationResult {
-  name: string;
-  matchScore: number;
-  sections: Section[];
-}
-
 const CVEvaluator = () => {
   const [cvFile, setCvFile] = useState<File | null>(null);
   const [jobFile, setJobFile] = useState<File | null>(null);
@@ -30,7 +18,6 @@ const CVEvaluator = () => {
   } | null>(null);
   const [isEvaluating, setIsEvaluating] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [result, setResult] = useState<EvaluationResult | null>(null);
 
   const handleFileUpload = (event: ChangeEvent<HTMLInputElement>, type: 'cv' | 'jd') => {
     const file = event.target.files?.[0];
