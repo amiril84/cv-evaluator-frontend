@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint .",
-    "start": "vite preview",
+    "start": "npx http-server ./dist",
     "preview": "vite preview"
   },
   "dependencies": {
