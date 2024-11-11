@@ -18,9 +18,16 @@ interface EvaluationResult {
 }
 
 const CVEvaluator = () => {
-  const [cvFile, setCvFile] = useState(null);
-  const [jobFile, setJobFile] = useState(null);
-  const [evaluationReport, setEvaluationReport] = useState(null);
+  const [cvFile, setCvFile] = useState<File | null>(null);
+  const [jobFile, setJobFile] = useState<File | null>(null);
+  const [evaluationReport, setEvaluationReport] = useState<{
+    matchScore: number;
+    sections: {
+      title: string;
+      status: 'success' | 'warning' | 'error';
+      description: string | string[];
+    }[];
+  } | null>(null);
   const [isEvaluating, setIsEvaluating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<EvaluationResult | null>(null);
@@ -128,7 +135,6 @@ const CVEvaluator = () => {
       setError('Failed to download report');
     }
   };
-  
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -261,7 +267,11 @@ const CVEvaluator = () => {
               </div>
 
               <div className="space-y-6">
-                {evaluationReport.sections.map((section, index) => (
+                {evaluationReport.sections.map((section: {
+                  title: string;
+                  status: 'success' | 'warning' | 'error';
+                  description: string | string[];
+                }, index: number) => (
                   <div 
                     key={index} 
                     className="flex items-start gap-4 p-4 rounded-lg bg-gray-50"
@@ -279,7 +289,7 @@ const CVEvaluator = () => {
                       <h3 className="text-lg font-medium mb-1">{section.title}</h3>
                       {section.title === "Missing Keywords" ? (
                         <div className="flex flex-wrap gap-2">
-                          {section.description.map((keyword, idx) => (
+                          {(section.description as string[]).map((keyword: string, idx: number) => (
                             <span key={idx} className="px-2 py-1 bg-gray-200 rounded-md text-sm">
                               {keyword}
                             </span>
