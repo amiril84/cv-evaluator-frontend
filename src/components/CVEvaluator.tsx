@@ -74,9 +74,13 @@ const CVEvaluator = () => {
 
     try {
       console.log('Sending request to API...');
-      const response = await fetch('http://cv-evaluator-backend-production.up.railway.app:3000/api/evaluate', {
+      const response = await fetch('https://cv-evaluator-backend-production.up.railway.app/api/evaluate', {
         method: 'POST',
+        credentials: 'include',
         body: formData,
+        headers: {
+          'Accept': 'application/json',
+        }
       });
 
       console.log('Response received:', response.status);
@@ -98,10 +102,12 @@ const CVEvaluator = () => {
 
   const downloadReport = async () => {
     try {
-      const response = await fetch('http://cv-evaluator-backend-production.up.railway.app:3000/api/generate-report', {
+      const response = await fetch('https://cv-evaluator-backend-production.up.railway.app/api/generate-report', {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json',
         },
         body: JSON.stringify(evaluationReport),
       });
